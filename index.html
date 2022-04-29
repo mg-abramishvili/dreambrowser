@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DreamBrowser</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <webview id="webview" src="" webpreferences="nativeWindowOpen=true" allowpopups></webview>
+
+    <div class="panel">
+        <button id="back"><img src="img/back.svg"/></button>
+        <button id="home"><img src="img/home.svg"/></button>
+    </div>
+
+    <script>
+        onload = () => {
+            const webview = document.querySelector('webview')
+            
+            const homepage = 'https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_a_target'
+            // webview.src = homepage
+            webview.src = 'https://yandex.ru'
+            
+            
+            document.getElementById("back").addEventListener("click", function (e) {
+                webview.goBack()
+            })
+            
+            document.getElementById("home").addEventListener("click", function (e) {
+                webview.src = homepage
+            })
+            
+            webview.addEventListener('new-window', function (e) {
+                e.preventDefault()
+
+                if(e.url.includes('exler.ru')) {
+                    return alert('access denied')
+                }
+
+                webview.src = e.url
+            })
+            
+            webview.addEventListener('will-navigate', function (e) {
+                e.preventDefault()
+
+                if(e.url.includes('exler.ru')) {
+                    return alert('access denied')
+                }
+
+                webview.src = e.url
+            })
+        }
+    </script>
+</body>
+</html>
