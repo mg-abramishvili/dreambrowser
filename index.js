@@ -1,20 +1,24 @@
-const sqlite3 = require('sqlite3').verbose()
 const express = require('express')
 
 const ex = express()
 const server = ex.listen(3000)
-const db = new sqlite3.Database('./database.db')
 
-ex.get('/', function(req, res) {
-    db.serialize(() => {
-        db.each('SELECT * FROM domains', function(err, row) {
-            res.send(`Домен: ${row.name}`)
-        })
-    })
-})
-
+const fs = require('fs')
 const path = require('path')
 const url = require('url')
+
+const configFile = JSON.parse(fs.readFileSync('config.json'))
+
+let newConfigFile = configFile
+
+newConfigFile.whitelist.push('guna.ru')
+
+fs.writeFileSync('student-2.json', JSON.stringify(newConfigFile))
+
+ex.get('/', function(req, res) {
+    res.send('ok')
+})
+
 const { app, BrowserWindow } = require('electron')
 
 let mainWindow
